@@ -2,7 +2,6 @@ import sqlite3
 
 
 def create_connection(db_file):
-    """Создает соединение с базой данных SQLite."""
     conn = None
     try:
         conn = sqlite3.connect(db_file)
@@ -13,15 +12,13 @@ def create_connection(db_file):
 
 
 def create_table(conn):
-    """Создает таблицу для хранения рекордов, если она не существует."""
+
     try:
-        sql = '''
-        CREATE TABLE IF NOT EXISTS scores (
+        sql = '''CREATE TABLE IF NOT EXISTS scores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             player_name TEXT NOT NULL,
             score INTEGER NOT NULL
-        );
-        '''
+            );'''
 
         cur = conn.cursor()
         cur.execute(sql)
@@ -31,9 +28,7 @@ def create_table(conn):
 
 def save_score(conn, player_name, score):
     """Сохраняет результат игры в базу данных."""
-    sql = '''
-    INSERT INTO scores (player_name, score) VALUES (?, ?)
-    '''
+    sql = '''INSERT INTO scores (player_name, score) VALUES (?, ?)'''
 
     cur = conn.cursor()
     cur.execute(sql, (player_name, score))
@@ -43,9 +38,7 @@ def save_score(conn, player_name, score):
 
 def get_high_scores(conn, limit=5):
     """Получает топ-N лучших результатов."""
-    sql = '''
-    SELECT player_name, score FROM scores ORDER BY score DESC LIMIT ?
-    '''
+    sql = '''SELECT player_name, score FROM scores ORDER BY score DESC LIMIT ?'''
 
     cur = conn.cursor()
     cur.execute(sql, (limit,))
